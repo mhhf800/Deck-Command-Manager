@@ -1,11 +1,12 @@
 {
-  "name": "decky-plugin-template",
+  "name": "Deck-Command-Manager",
   "version": "0.0.1",
-  "description": "A template to quickly create decky plugins from scratch, based on TypeScript and webpack",
+  "description": "Deck launch option command manager.",
   "type": "module",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
+    "zip": "bestzip Deck-Command-Manager.zip dist main.py plugin.json assets backend py_modules package.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -32,6 +33,7 @@
     "@types/react": "19.1.1",
     "@types/react-dom": "19.1.1",
     "@types/webpack": "^5.28.5",
+    "bestzip": "^4.0.3",
     "rollup": "^4.53.3",
     "typescript": "^5.6.2"
   },

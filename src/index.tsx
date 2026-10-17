@@ -3,7 +3,8 @@ import {
   PanelSection,
   PanelSectionRow,
   Navigation,
-  staticClasses
+  staticClasses,
+  Field
 } from "@decky/ui";
 import {
   addEventListener,
@@ -11,41 +12,53 @@ import {
   callable,
   definePlugin,
   toaster,
-  // routerHook
 } from "@decky/api"
 import { useState } from "react";
 import { FaShip } from "react-icons/fa";
 
-// import logo from "../assets/logo.png";
-
-// This function calls the python function "add", which takes in two numbers and returns their sum (as a number)
-// Note the type annotations:
-//  the first one: [first: number, second: number] is for the arguments
-//  the second one: number is for the return value
+// 1. 对应后端的 add 函数
 const add = callable<[first: number, second: number], number>("add");
 
-// This function calls the python function "start_timer", which takes in no arguments and returns nothing.
-// It starts a (python) timer which eventually emits the event 'timer_event'
+// 2. 对应后端的 start_timer 函数
 const startTimer = callable<[], void>("start_timer");
+
+// 3. 【新增】对应后端新增的 get_system_info 函数（无参数，返回 string）
+const getSystemInfo = callable<[], string>("get_system_info");
 
 function Content() {
   const [result, setResult] = useState<number | undefined>();
+  
+  // 【新增】用于存放系统内核版本的状态
+  const [sysInfo, setSysInfo] = useState<string>("点击下方按钮获取系统信息");
 
   const onClick = async () => {
-    const result = await add(Math.random(), Math.random());
-    setResult(result);
+    const res = await add(Math.random(), Math.random());
+    setResult(res);
+  };
+
+  // 【新增】点击获取系统信息的处理函数
+  const handleGetSysInfo = async () => {
+    try {
+      const info = await getSystemInfo();
+      setSysInfo(info);
+    } catch (e) {
+      setSysInfo(`获取失败: ${e}`);
+    }
   };
 
   return (
-    <PanelSection title="Panel Section">
+    <PanelSection title="插件测试面板">
+      {/* 原有的加法测试按钮 */}
       <PanelSectionRow>
         <ButtonItem
           layout="below"
           onClick={onClick}
         >
-          {result ?? "Add two numbers via Python"}
+          {result !== undefined ? `计算结果: ${result}` : "Add two numbers via Python"}
         </ButtonItem>
       </PanelSectionRow>
+
+      {/* 原有的 Timer 测试按钮 */}
       <PanelSectionRow>
         <ButtonItem
           layout="below"
@@ -55,35 +68,28 @@ function Content() {
         </ButtonItem>
       </PanelSectionRow>
 
-      {/* <PanelSectionRow>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img src={logo} />
-        </div>
-      </PanelSectionRow> */}
-
-      {/*<PanelSectionRow>
+      {/* 【新增】系统信息展示区域与按钮 */}
+      <PanelSectionRow>
+        <Field label="系统状态">
+          {sysInfo}
+        </Field>
+      </PanelSectionRow>
+      <PanelSectionRow>
         <ButtonItem
           layout="below"
-          onClick={() => {
-            Navigation.Navigate("/decky-plugin-test");
-            Navigation.CloseSideMenus();
-          }}
+          onClick={handleGetSysInfo}
         >
-          Router
+          获取 SteamOS 内核版本
         </ButtonItem>
-      </PanelSectionRow>*/}
+      </PanelSectionRow>
     </PanelSection>
   );
 };
 
 export default definePlugin(() => {
-  console.log("Template plugin initializing, this is called once on frontend startup")
+  console.log("插件初始化, 这在前端启动时会被调用一次")
 
-  // serverApi.routerHook.addRoute("/decky-plugin-test", DeckyPluginRouterTest, {
-  //   exact: true,
-  // });
-
-  // Add an event listener to the "timer_event" event from the backend
+  // 添加对 "timer_event" 事件的监听
   const listener = addEventListener<[
     test1: string,
     test2: boolean,
@@ -97,19 +103,14 @@ export default definePlugin(() => {
   });
 
   return {
-    // The name shown in various decky menus
-    name: "Test Plugin",
-    // The element displayed at the top of your plugin's menu
-    titleView: <div className={staticClasses.Title}>Decky Example Plugin</div>,
-    // The content of your plugin's menu
+    name: "Deck-Command-Manager",
+	title: "命令管理器",
+    titleView: <div className={staticClasses.Title}>命令管理器</div>,
     content: <Content />,
-    // The icon displayed in the plugin list
     icon: <FaShip />,
-    // The function triggered when your plugin unloads
     onDismount() {
       console.log("Unloading")
       removeEventListener("timer_event", listener);
-      // serverApi.routerHook.removeRoute("/decky-plugin-test");
     },
   };
 });

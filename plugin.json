@@ -1,11 +1,13 @@
 {
-  "name": "Example Plugin",
-  "author": "John Doe",
+  "name": "Deck-Command-Manager",
+  "title": "命令管理器",
+  "description": "一个用于管理和执行自定义命令的 SteamDeck 插件",
+  "author": "Magicwing",
   "flags": ["debug", "_root"],
   "api_version": 1,
   "publish": {
     "tags": ["template", "root"],
-    "description": "Decky example plugin.",
+    "description": "Deck launch option command manager.",
     "image": "https://opengraph.githubassets.com/1/SteamDeckHomebrew/PluginLoader"
   }
 }

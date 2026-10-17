@@ -5,11 +5,22 @@ import os
 # and add the `decky-loader/plugin/imports` path to `python.analysis.extraPaths` in `.vscode/settings.json`
 import decky
 import asyncio
+import subprocess
 
 class Plugin:
     # A normal method. It can be called from the TypeScript side using @decky/api.
     async def add(self, left: int, right: int) -> int:
         return left + right
+	
+	# 2. 系统信息测试：获取 Steam Deck 的系统内核版本 (uname -r)
+    async def get_system_info(self) -> str:
+        try:
+            # 执行简单的 Linux 命令
+            res = subprocess.run(["uname", "-r"], capture_output=True, text=True)
+            return f"SteamOS 内核版本: {res.stdout.strip()}"
+        except Exception as e:
+            decky.logger.error(f"获取系统信息失败: {e}")
+            return f"获取失败: {str(e)}"
 
     async def long_running(self):
         await asyncio.sleep(15)
@@ -19,18 +30,18 @@ class Plugin:
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
     async def _main(self):
         self.loop = asyncio.get_event_loop()
-        decky.logger.info("Hello World!")
+        decky.logger.info("测试插件后端已成功启动！")
 
     # Function called first during the unload process, utilize this to handle your plugin being stopped, but not
     # completely removed
     async def _unload(self):
-        decky.logger.info("Goodnight World!")
+        decky.logger.info("测试插件后端已卸载!")
         pass
 
     # Function called after `_unload` during uninstall, utilize this to clean up processes and other remnants of your
     # plugin that may remain on the system
     async def _uninstall(self):
-        decky.logger.info("Goodbye World!")
+        decky.logger.info("再见!")
         pass
 
     async def start_timer(self):
@@ -38,7 +49,7 @@ class Plugin:
 
     # Migrations that should be performed before entering `_main()`.
     async def _migration(self):
-        decky.logger.info("Migrating")
+        decky.logger.info("执行迁移任务...")
         # Here's a migration example for logs:
         # - `~/.config/decky-template/template.log` will be migrated to `decky.decky_LOG_DIR/template.log`
         decky.migrate_logs(os.path.join(decky.DECKY_USER_HOME,
