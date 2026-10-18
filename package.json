@@ -1,13 +1,15 @@
 {
   "name": "Deck-Command-Manager",
-  "version": "0.0.1",
-  "description": "Deck launch option command manager.",
+  "version": "0.2",
+  "description": "一个用于记录短文本的插件，主要用于记录一些容易忘记的启动项命令，支持新增，编辑，删除，复制。",
   "type": "module",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
-    "zip": "bestzip Deck-Command-Manager.zip dist main.py plugin.json assets backend py_modules package.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "_zip": "bestzip Deck-Command-Manager.zip dist main.py plugin.json assets backend py_modules package.json",
+	"__zip": "mkdir -p Deck-Command-Manager && cp -r dist main.py plugin.json assets backend py_modules package.json Deck-Command-Manager/ && bestzip Deck-Command-Manager.zip Deck-Command-Manager && rm -rf Deck-Command-Manager",
+    "zip": "node zip.js",
+	"test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

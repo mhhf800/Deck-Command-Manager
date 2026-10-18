@@ -1,5 +1,5 @@
 {
-  "name": "Deck-Command-Manager",
+  "name": "命令管理器",
   "title": "命令管理器",
   "description": "一个用于记录短文本的插件，主要用于记录一些容易忘记的启动项命令，支持新增，编辑，删除，复制。",
   "author": "灵翼Magicwing",
