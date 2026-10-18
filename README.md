@@ -1,7 +1,7 @@
 # Decky Command Manager [![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://deckbrew.xyz/discord)
 
 ## Plugin features（插件功能）
-**用于在 SteamDeck 游戏模式下记录短文本的插件，主要用于记录一些容易忘记的启动项命令，支持新增，编辑，删除，复制。** 
+**用于在 SteamDeck 游戏模式下记录短文本的插件，主要用于记录一些容易忘记的启动项命令，支持新增，编辑，删除，复制，同时记录最近3条使用的过的文本命令。** 
 **A plugin for recording short text in SteamDeck gaming mode, mainly used to record some easily forgotten launch option commands, supporting add, edit, delete, and copy.**
 
 ## 官方模板说明
